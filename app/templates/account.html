@@ -1,9 +1,18 @@
 {% extends "base.html" %}
 
-{% block title %}
-Аккаунт
-{% endblock %}
+{% block title %}Аккаунт{% endblock %}
 
 {% block content %}
 <h1>Это страница вашего аккаунта</h1>
+
+{% if current_user.is_authenticated %}
+
+<p>Ваш id: {{ current_user.id }}</p>
+<p>Ваш логин: {{ current_user.username }}</p>
+<p>Ваш email: {{ current_user.email }}</p>
+
+<a href="{{ url_for('edit_profile') }}">Редактировать профиль</a>
+
+{% endif %}
+
 {% endblock %}
