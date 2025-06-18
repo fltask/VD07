@@ -1,38 +1,69 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>
-        {% block title %}{% endblock %}
-    </title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{% block title %}{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+          integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/all.min.css') }}">
 </head>
 <body>
+<div class="d-flex">
+  <!-- Sidebar Toggle (visible on mobile) -->
+  <button class="btn btn-primary d-md-none m-2" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+    Меню
+  </button>
 
-<nav>
-    <a href="{{ url_for('home') }}">Home</a>
-    {% if current_user.is_authenticated %}
-    <a href="{{ url_for('account') }}">Account</a>
-    <a href="{{ url_for('logout') }}">Logout</a>
-    {% else %}
-    <a href="{{ url_for('login') }}">Login</a>
-    <a href="{{ url_for('register') }}">Register</a>
-    {% endif %}
-</nav>
+  <!-- Sidebar -->
+  <nav id="sidebar" class="collapse d-md-block bg-light p-3" style="min-width: 200px; height: 100vh;">
+    <a class="navbar-brand d-block mb-4 text-center" href="{{ url_for('home') }}">MyApp</a>
+    <ul class="nav nav-pills flex-column">
+      <li class="nav-item">
+        <a class="nav-link{% if request.endpoint=='home' %} active{% endif %}" href="{{ url_for('home') }}">Home</a>
+      </li>
+      {% if current_user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link{% if request.endpoint=='account' %} active{% endif %}" href="{{ url_for('account') }}">Account</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link{% if request.endpoint=='login' %} active{% endif %}" href="{{ url_for('login') }}">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link{% if request.endpoint=='register' %} active{% endif %}" href="{{ url_for('register') }}">Register</a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
 
-<div>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category, message in messages %}
-    <div class="{{ category }}">{{ message }}</div>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
+  <!-- Main content -->
+  <div class="flex-grow-1">
+    <div class="container-fluid mt-4">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ 'success' if category=='success' else 'danger' }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </div>
+  </div>
 </div>
 
-<div>
-    {% block content %}{% endblock %}
-</div>
-
-
-</body>
+<!-- Bootstrap JS Bundle -->
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"
+        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+        crossorigin="anonymous"></script></body>
 </html>

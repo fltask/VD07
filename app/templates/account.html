@@ -3,16 +3,15 @@
 {% block title %}Аккаунт{% endblock %}
 
 {% block content %}
-<h1>Это страница вашего аккаунта</h1>
-
-{% if current_user.is_authenticated %}
-
-<p>Ваш id: {{ current_user.id }}</p>
-<p>Ваш логин: {{ current_user.username }}</p>
-<p>Ваш email: {{ current_user.email }}</p>
-
-<a href="{{ url_for('edit_profile') }}">Редактировать профиль</a>
-
-{% endif %}
-
+<div class="card mx-auto" style="max-width: 500px;">
+    <div class="card-body">
+        <h3 class="card-title mb-3">Это страница вашего аккаунта</h3>
+        {% if current_user.is_authenticated %}
+        <p class="mb-1"><strong>Ваш id:</strong> {{ current_user.id }}</p>
+        <p class="mb-1"><strong>Ваш логин:</strong> {{ current_user.username }}</p>
+        <p class="mb-3"><strong>Ваш email:</strong> {{ current_user.email }}</p>
+        <a href="{{ url_for('edit_profile') }}" class="btn btn-primary">Редактировать профиль</a>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
